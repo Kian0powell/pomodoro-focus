@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pomodoro Focus</title>
+<style>
+body{font-family:Arial;background:#fff1f2;padding:25px;text-align:center}
+main{max-width:500px;margin:40px auto;background:white;padding:30px;border-radius:18px}
+#timer{font-size:65px;color:#e11d48;font-weight:bold;margin:25px 0}
+button{background:#e11d48;color:white;border:0;padding:12px 18px;margin:5px;border-radius:8px;cursor:pointer}
+#mode{color:#64748b;font-size:22px}
+</style>
+</head>
+<body>
+<main>
+<h1>Pomodoro Focus</h1>
+<p>Stay productive with focused work sessions.</p>
+<button onclick="changeMode(25,'Focus Session')">Focus</button>
+<button onclick="changeMode(5,'Short Break')">Break</button>
+<h2 id="mode">Focus Session</h2>
+<div id="timer">25:00</div>
+<button onclick="start()">Start</button>
+<button onclick="pause()">Pause</button>
+<button onclick="reset()">Reset</button>
+<p id="message"></p>
+</main>
+<script>
+let duration=1500;
+let remaining=duration;
+let interval=null;
+let deadline=0;
+function render(){
+ const m=Math.floor(remaining/60);
+ const s=remaining%60;
+ document.getElementById("timer").textContent=
+ String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+function tick(){
+ remaining=Math.max(0,Math.ceil((deadline-Date.now())/1000));
+ render();
+ if(remaining===0){
+  clearInterval(interval);
+  interval=null;
+  document.getElementById("message").textContent="Session completed!";
+ }
+}
+function start(){
+ if(interval!==null||remaining<=0)return;
+ deadline=Date.now()+remaining*1000;
+ interval=setInterval(tick,200);
+}
+function pause(){
+ if(interval!==null)tick();
+ clearInterval(interval);
+ interval=null;
+}
+function reset(){
+ pause();
+ remaining=duration;
+ document.getElementById("message").textContent="";
+ render();
+}
+function changeMode(minutes,name){
+ duration=minutes*60;
+ document.getElementById("mode").textContent=name;
+ reset();
+}
+render();
+</script>
+</body>
+</html>
