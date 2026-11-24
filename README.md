@@ -62,3 +62,12 @@ render();
 </script>
 </body>
 </html>
+## Manual Testing Checklist
+
+- [ ] Start a focus session and check the countdown.
+- [ ] Pause and resume without resetting the remaining time.
+- [ ] Reset a session and verify the intended duration.
+
+### Test Notes
+
+Record the observed result and any reproducible issue after running the tests.
